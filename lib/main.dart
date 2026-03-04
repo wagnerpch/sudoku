@@ -184,6 +184,16 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
 
   void _onCellChanged(int row, int col, String value) {
     if (!_editable[row][col]) return;
+
+    if (value.isEmpty) {
+      setState(() {
+        _history.add(List.generate(9, (i) => List.from(_grid[i])));
+        _grid[row][col] = 0;
+      });
+      _saveGame();
+      return;
+    }
+
     int? num = int.tryParse(value);
     if (num == null || num < 1 || num > 9) return;
     setState(() {
